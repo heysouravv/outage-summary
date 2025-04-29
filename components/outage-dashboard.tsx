@@ -39,87 +39,68 @@ export type Technician = {
 const outages: Outage[] = [
   {
     id: "out-1",
-    service: "Cloud Storage Service",
+    service: "Pump System",
     startTime: new Date(Date.now() - 3600000 * 2), // 2 hours ago
     status: "active",
-    description: "Intermittent access issues affecting Cloud Storage in US-East region",
-    affectedAreas: ["US-East", "US-Central"],
+    description: "Main circulation pump failure in Building B. Pressure drop detected in primary cooling loop.",
+    affectedAreas: ["Building B", "Production Line 3"],
     updates: [
       {
         time: new Date(Date.now() - 3600000 * 2),
-        message: "Issue identified: Network routing problem detected",
+        message: "Issue identified: Pump failure detected with abnormal vibration patterns",
       },
       {
         time: new Date(Date.now() - 3600000),
-        message: "Engineers deployed to resolve network routing issues",
+        message: "Maintenance team dispatched to assess mechanical failure",
       },
     ],
   },
   {
     id: "out-2",
-    service: "Authentication API",
+    service: "Actuator Control",
     startTime: new Date(Date.now() - 3600000 * 5), // 5 hours ago
     status: "investigating",
-    description: "Users experiencing delayed authentication responses",
-    affectedAreas: ["Global"],
+    description: "Pneumatic actuator not responding to control signals on valve assembly V-103",
+    affectedAreas: ["Chemical Processing Unit", "Valve Station 4"],
     estimatedResolution: new Date(Date.now() + 3600000), // 1 hour from now
     updates: [
       {
         time: new Date(Date.now() - 3600000 * 5),
-        message: "Increased latency detected in authentication services",
+        message: "Actuator failure reported by operations team",
       },
       {
         time: new Date(Date.now() - 3600000 * 3),
-        message: "Root cause identified as database connection pool saturation",
+        message: "Initial diagnosis indicates possible air supply issue or solenoid failure",
       },
       {
         time: new Date(Date.now() - 3600000 * 1),
-        message: "Implementing connection pool optimizations",
+        message: "Testing replacement solenoid valve and checking for air leaks",
       },
     ],
   },
   {
     id: "out-3",
-    service: "Payment Processing",
-    startTime: new Date(Date.now() - 3600000 * 12), // 12 hours ago
-    status: "resolved",
-    description: "Payment transactions failing for European customers",
-    affectedAreas: ["Europe"],
-    estimatedResolution: new Date(Date.now() - 3600000), // 1 hour ago
+    service: "Oil Containment",
+    startTime: new Date(Date.now() - 3600000 * 8), // 8 hours ago
+    status: "active",
+    description: "Hydraulic oil leak detected at connection point on press machine P-201",
+    affectedAreas: ["Manufacturing Floor", "Hydraulic System"],
     updates: [
       {
-        time: new Date(Date.now() - 3600000 * 12),
-        message: "Payment failures reported by European customers",
+        time: new Date(Date.now() - 3600000 * 8),
+        message: "Oil leak detected during routine inspection",
       },
       {
-        time: new Date(Date.now() - 3600000 * 8),
-        message: "Issue traced to third-party payment gateway",
+        time: new Date(Date.now() - 3600000 * 6),
+        message: "Containment measures implemented, spill contained to immediate area",
       },
       {
         time: new Date(Date.now() - 3600000 * 4),
-        message: "Working with payment provider to restore service",
+        message: "Maintenance team identified failed seal as source of leak",
       },
       {
-        time: new Date(Date.now() - 3600000 * 1),
-        message: "Service fully restored, monitoring for stability",
-      },
-    ],
-  },
-  {
-    id: "out-4",
-    service: "Content Delivery Network",
-    startTime: new Date(Date.now() - 3600000 * 1), // 1 hour ago
-    status: "active",
-    description: "Increased latency affecting media delivery in Asia-Pacific region",
-    affectedAreas: ["Asia-Pacific"],
-    updates: [
-      {
-        time: new Date(Date.now() - 3600000 * 1),
-        message: "Latency spikes detected in APAC edge locations",
-      },
-      {
-        time: new Date(Date.now() - 1800000), // 30 minutes ago
-        message: "Traffic rerouting in progress to mitigate impact",
+        time: new Date(Date.now() - 3600000 * 2),
+        message: "Replacement parts ordered, temporary repairs in place",
       },
     ],
   },
@@ -209,15 +190,17 @@ export function OutageDashboard() {
           <header className="bg-background border-b border-border h-14 flex items-center px-6">
             <h1 className="text-xl font-semibold">Outage Events Dashboard</h1>
           </header>
-          <div className="flex-1 flex overflow-hidden">
+          <div className="flex-1 flex overflow-hidden w-full">
             <OutagesList outages={outages} onOutageSelect={handleOutageSelect} selectedOutageId={selectedOutage?.id} />
             {selectedOutage ? (
-              <OutageDetail
-                outage={selectedOutage}
-                technicians={technicians}
-                onClose={() => setSelectedOutage(null)}
-                onAppointmentScheduled={handleAppointmentScheduled}
-              />
+              <div className="flex-1 flex overflow-hidden">
+                <OutageDetail
+                  outage={selectedOutage}
+                  technicians={technicians}
+                  onClose={() => setSelectedOutage(null)}
+                  onAppointmentScheduled={handleAppointmentScheduled}
+                />
+              </div>
             ) : (
               <div className="flex-1 flex items-center justify-center p-6 bg-muted/20">
                 <div className="text-center">

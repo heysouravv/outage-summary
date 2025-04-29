@@ -170,7 +170,7 @@ function generateAIResponse(input: string, outage: Outage): string {
   }
 
   if (inputLower.includes("affected") || inputLower.includes("impact") || inputLower.includes("area")) {
-    return `This outage is affecting the following areas: ${outage.affectedAreas.join(", ")}. Users in these regions may experience service disruptions.`
+    return `This issue is affecting the following areas: ${outage.affectedAreas.join(", ")}. Operations in these areas may be disrupted until the issue is resolved.`
   }
 
   if (inputLower.includes("fix") || inputLower.includes("resolve") || inputLower.includes("when")) {
@@ -180,24 +180,42 @@ function generateAIResponse(input: string, outage: Outage): string {
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-      })}. Our team is working diligently to restore service as quickly as possible.`
+      })}. Our maintenance team is working diligently to restore normal operation as quickly as possible.`
     } else {
-      return "Our technical team is actively working on resolving this issue. We don't have an estimated resolution time yet, but we'll update you as soon as we have more information."
+      return "Our maintenance team is actively working on resolving this issue. We don't have an estimated resolution time yet, but we'll update you as soon as we have more information."
     }
   }
 
   if (inputLower.includes("cause") || inputLower.includes("reason") || inputLower.includes("why")) {
-    return `Based on our investigation, ${outage.updates.find((u) => u.message.toLowerCase().includes("identified"))?.message || "we're still investigating the root cause of this outage. Our technical team is analyzing the system logs and working to identify the issue."}`
+    return `Based on our investigation, ${outage.updates.find((u) => u.message.toLowerCase().includes("identified"))?.message || "we're still investigating the root cause of this issue. Our technical team is performing diagnostics and working to identify the failure mode."}`
+  }
+
+  if (inputLower.includes("part") || inputLower.includes("replacement") || inputLower.includes("repair")) {
+    if (outage.service.includes("Pump")) {
+      return "The pump system may require replacement of the mechanical seal, bearings, or impeller depending on the exact nature of the failure. Our technicians will determine the necessary parts after their inspection."
+    } else if (outage.service.includes("Actuator")) {
+      return "The actuator issue may be related to the solenoid valve, air supply, or control signal. We're currently testing components to determine which parts need replacement."
+    } else if (outage.service.includes("Oil")) {
+      return "The oil leak appears to be caused by a failed seal. Replacement parts have been ordered and temporary containment measures are in place."
+    }
+    return "Our maintenance team will determine which parts need replacement after completing their diagnostic assessment."
   }
 
   if (inputLower.includes("update") || inputLower.includes("latest")) {
     const latestUpdate = outage.updates[outage.updates.length - 1]
-    return `The latest update from our team (${latestUpdate.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}): ${latestUpdate.message}`
+    return `The latest update from our maintenance team (${latestUpdate.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}): ${latestUpdate.message}`
   }
 
   if (inputLower.includes("technician") || inputLower.includes("appointment") || inputLower.includes("schedule")) {
-    return "You can schedule an appointment with a technician by clicking on the 'Schedule Technician' tab above. This will allow you to select from available technicians based on their location and availability."
+    return "You can schedule an appointment with a maintenance technician by clicking on the 'Schedule Technician' tab above. This will allow you to select from available technicians based on their location and availability."
   }
 
-  return "I'm here to help with information about this outage. You can ask about the current status, affected areas, estimated resolution time, or the latest updates. If you need hands-on assistance, you can also schedule an appointment with a technician."
+  if (inputLower.includes("safety") || inputLower.includes("hazard") || inputLower.includes("danger")) {
+    if (outage.service.includes("Oil")) {
+      return "The oil leak has been contained and does not present an immediate safety hazard. Standard safety protocols for working around hydraulic fluids should be observed in the affected area."
+    }
+    return "Our team has implemented appropriate safety measures for this issue. Always follow site safety protocols when in the affected areas."
+  }
+
+  return "I'm here to help with information about this equipment issue. You can ask about the current status, affected areas, estimated resolution time, or the latest updates. If you need hands-on assistance, you can also schedule an appointment with a technician."
 }

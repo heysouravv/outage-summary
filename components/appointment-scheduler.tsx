@@ -49,14 +49,14 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-border bg-background">
+    <div className="flex flex-col h-full w-full">
+      <div className="p-4 border-b border-border bg-background w-full">
         <h2 className="font-semibold">Schedule a Technician</h2>
         <p className="text-sm text-muted-foreground">Find available technicians near you to help resolve the issue</p>
       </div>
 
-      <ScrollArea className="flex-1 p-4">
-        <div className="max-w-3xl mx-auto">
+      <ScrollArea className="flex-1 p-4 w-full">
+        <div className="w-full max-w-5xl mx-auto">
           <Tabs defaultValue="technicians" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="technicians">Select Technician</TabsTrigger>
@@ -68,12 +68,12 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="technicians" className="mt-4">
-              <div className="grid gap-4 md:grid-cols-2">
+            <TabsContent value="technicians" className="mt-4 w-full">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
                 {technicians.map((technician) => (
                   <Card
                     key={technician.id}
-                    className={`cursor-pointer transition-all ${
+                    className={`cursor-pointer transition-all w-full ${
                       selectedTechnician?.id === technician.id ? "ring-2 ring-primary" : "hover:bg-muted/50"
                     }`}
                     onClick={() => handleSelectTechnician(technician)}
@@ -104,13 +104,13 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
               </div>
             </TabsContent>
 
-            <TabsContent value="date" className="mt-4">
+            <TabsContent value="date" className="mt-4 w-full">
               {selectedTechnician && (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2 w-full">
                   {selectedTechnician.availability.map((availDay, index) => (
                     <Card
                       key={index}
-                      className={`cursor-pointer transition-all ${
+                      className={`cursor-pointer transition-all w-full ${
                         selectedDate?.toDateString() === availDay.date.toDateString()
                           ? "ring-2 ring-primary"
                           : "hover:bg-muted/50"
@@ -140,10 +140,10 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
               )}
             </TabsContent>
 
-            <TabsContent value="time" className="mt-4">
+            <TabsContent value="time" className="mt-4 w-full">
               {selectedTechnician && selectedDate && (
                 <>
-                  <Card className="mb-4">
+                  <Card className="mb-4 w-full">
                     <CardHeader>
                       <CardTitle>Select a Time Slot</CardTitle>
                       <CardDescription>
@@ -151,7 +151,7 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {selectedTechnician.availability
                           .find((a) => a.date.toDateString() === selectedDate.toDateString())
                           ?.slots.map((slot) => (
@@ -169,7 +169,7 @@ export function AppointmentScheduler({ outage, technicians, onAppointmentSchedul
                   </Card>
 
                   {selectedTimeSlot && (
-                    <Card>
+                    <Card className="w-full">
                       <CardHeader>
                         <CardTitle>Appointment Summary</CardTitle>
                       </CardHeader>

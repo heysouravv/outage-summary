@@ -15,10 +15,9 @@ import { AlertTriangle, BarChart3, Bell, Calendar, Clock, Home, LifeBuoy, Settin
 export function DashboardSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader className="flex items-center px-4 py-2">
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-6 w-6 text-red-500" />
-          <span className="text-lg font-semibold">Outage Monitor</span>
+      <SidebarHeader className="flex items-center justify-center px-4 py-2">
+        <div className="flex items-center">
+          <img src="/images/prometheus-group.svg" alt="Prometheus Group Logo" className="h-10 w-auto" />
         </div>
         <SidebarTrigger className="ml-auto md:hidden" />
       </SidebarHeader>
@@ -28,7 +27,15 @@ export function DashboardSidebar() {
             <SidebarMenuButton asChild isActive>
               <a href="#">
                 <Home />
-                <span>Dashboard</span>
+                <span>Home</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a href="#">
+                <Bell />
+                <span>Notifications</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -61,14 +68,6 @@ export function DashboardSidebar() {
               <a href="#">
                 <BarChart3 />
                 <span>Analytics</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a href="#">
-                <Bell />
-                <span>Notifications</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -64,8 +64,8 @@ export function OutageDetail({ outage, technicians, onClose, onAppointmentSchedu
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-muted/20 overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-border bg-background">
+    <div className="flex-1 flex flex-col bg-muted/20 overflow-hidden w-full h-full">
+      <div className="flex items-center justify-between p-4 border-b border-border bg-background w-full">
         <div className="flex items-center gap-3">
           {getStatusIcon(outage.status)}
           <div>
@@ -81,25 +81,27 @@ export function OutageDetail({ outage, technicians, onClose, onAppointmentSchedu
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-        <div className="border-b border-border bg-background">
-          <TabsList className="mx-4 my-1">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="chat">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col w-full h-full">
+        <div className="border-b border-border bg-background w-full">
+          <TabsList className="mx-4 my-1 w-[calc(100%-2rem)] grid grid-cols-3">
+            <TabsTrigger value="overview" className="flex items-center justify-center">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="chat" className="flex items-center justify-center">
               <MessageSquare className="h-4 w-4 mr-2" />
               AI Chat
             </TabsTrigger>
-            <TabsTrigger value="schedule">
+            <TabsTrigger value="schedule" className="flex items-center justify-center">
               <Calendar className="h-4 w-4 mr-2" />
               Schedule Technician
             </TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="overview" className="flex-1 p-4 overflow-auto">
-          <ScrollArea className="h-full">
-            <div className="space-y-6 max-w-3xl mx-auto">
-              <Card>
+        <TabsContent value="overview" className="flex-1 p-4 overflow-auto w-full">
+          <ScrollArea className="h-full w-full">
+            <div className="space-y-6 w-full max-w-5xl mx-auto">
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>Outage Details</CardTitle>
                   <CardDescription>Started at {formatDateTime(outage.startTime)}</CardDescription>
@@ -130,7 +132,7 @@ export function OutageDetail({ outage, technicians, onClose, onAppointmentSchedu
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>Updates Timeline</CardTitle>
                 </CardHeader>
@@ -157,11 +159,11 @@ export function OutageDetail({ outage, technicians, onClose, onAppointmentSchedu
           </ScrollArea>
         </TabsContent>
 
-        <TabsContent value="chat" className="flex-1 p-0 overflow-hidden">
+        <TabsContent value="chat" className="flex-1 p-0 overflow-hidden w-full h-full">
           <AIChatInterface outage={outage} />
         </TabsContent>
 
-        <TabsContent value="schedule" className="flex-1 p-0 overflow-hidden">
+        <TabsContent value="schedule" className="flex-1 p-0 overflow-hidden w-full h-full">
           <AppointmentScheduler
             outage={outage}
             technicians={technicians}
